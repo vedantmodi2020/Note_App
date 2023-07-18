@@ -1,7 +1,7 @@
 # Note App
 
 ## Introduction
-![Note App Logo](note_app_logo.png)
+![Note App Logo](note-app-logo.png)
 
 The Note App is a powerful application designed to help users organize and manage their notes effectively. With this app, users can create, edit, and delete notes to keep track of important information, tasks, ideas, and more.
 
