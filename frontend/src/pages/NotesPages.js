@@ -17,37 +17,58 @@ const NotesPages = () => {
   };
 
   let getNote = async () => {
-    let response = await fetch(`/mainapp/notes/${id}/`);
+    let response = await fetch(`/mainapp/notes/${id}/`,{
+      method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          method: "GET", 
+        }),
+    });
     let data = await response.json();
     setNote(data);
   };
 
   let updateNote = async () => {
     let response = fetch(`/mainapp/notes/${id}/`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(note),
+      method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          method: "PUT", 
+          body: note.body, 
+        }),
     });
   };
 
-  let CreateNote = async () => {
-    let response = fetch(`/mainapp/notes/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(note),
-    });
+  const CreateNote = async () => {
+    try {
+      const response = await fetch("/mainapp/notes/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          method: "CREATE", 
+          body: note.body, 
+        }),
+      });
+    } catch (error) {
+      console.error("Error creating note:", error);
+    }
   };
 
   let deleteNote = async () => {
     fetch(`/mainapp/notes/${id}/`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          method: "DELETE", 
+        }),
     });
   };
 

@@ -9,6 +9,18 @@ def getNotesList(request):
     return Response(serializer.data)
 
 
+def searchNotes(request):
+    data = request.data.get("body")
+    note = notes.objects.filter(body__contains = data)
+    searializer = NoteSerializer(note,many = True)
+    return Response(searializer.data)
+
+def sortList(request):
+    note = notes.objects.all().order_by('updated') if request.data.get("body") else notes.objects.all().order_by('-updated')
+    serializer = NoteSerializer(note, many=True)
+    return Response(serializer.data)
+
+
 def getNoteDetail(request, pk):
     note = notes.objects.get(id=pk)
     serializer = NoteSerializer(note, many=False)
@@ -16,9 +28,10 @@ def getNoteDetail(request, pk):
 
 
 def createNote(request):
-    data = request.data
+
+    data = request.data.get("body")
     note = notes.objects.create(
-        body=data['body']
+        body=data
     )
     serializer = NoteSerializer(note, many=False)
     return Response(serializer.data)
