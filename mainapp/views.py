@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote
+from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote, searchNotes , sortList
 from django.views.decorators.csrf import csrf_exempt
 
 @api_view(['GET'])
@@ -42,21 +42,24 @@ def getRoutes(request):
 
 
 @csrf_exempt
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def getNotes(request):
     methods = {
         'GET': getNotesList,
-        'POST': createNote,
+        'CREATE': createNote,
+        'SEARCH': searchNotes,
+        'SORT' : sortList,
     }
-    return methods[request.method](request)
+    return methods[request.data["method"]](request)
 
 
 @csrf_exempt
 @api_view(['GET', 'PUT', 'POST'])
 def getNote(request, pk):
+    print(request.data,pk,"20281082121092")
     methods = {
         'GET': lambda request, pk: getNoteDetail(request, pk),
         'PUT': lambda request, pk: updateNote(request, pk),
-        'POST': lambda request, pk: deleteNote(request, pk),
+        'DELETE': lambda request, pk: deleteNote(request, pk),
     }
-    return methods[request.method](request, pk)
+    return methods[request.data["method"]](request, pk)
